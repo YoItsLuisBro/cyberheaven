@@ -47,7 +47,7 @@ export function Home() {
         <div className="grid2">
           <Link to="/deadline" className="cardlink">
             <div className="card">
-              <div className="cardtitle">DEADLINE BRUTAL</div>
+              <div className="cardtitle">DEADLINE MACHINE</div>
               <div className="cardbody">
                 Task board + focus timer. Loud labels. Hard dividers.
               </div>
