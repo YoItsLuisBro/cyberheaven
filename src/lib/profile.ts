@@ -11,7 +11,7 @@ export async function fetchMyProfile() {
     .schema("core")
     .from("profiles")
     .select("id, username, avatar_path")
-    .single();
+    .maybeSingle();
 }
 
 export async function saveUsername(username: string) {
