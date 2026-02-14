@@ -24,21 +24,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setProfileLoading(true);
     try {
-      // Try fetch profile
-      const res = await fetchMyProfile();
+      // 1) Try fetch
+      const res = await fetchMyProfile(user.id);
+      if (res.error) throw res.error;
 
-      // If missing, create (trigger should do this; this is a safety net)
-      if (res.error) {
-        await supabase.schema("core").from("profiles").insert({ id: user.id });
+      // 2) If missing, create it and fetch again
+      if (!res.data) {
+        const up = await supabase
+          .schema("core")
+          .from("profiles")
+          .upsert({ id: user.id }, { onConflict: "id" });
+
+        if (up.error) throw up.error;
+
+        const res2 = await fetchMyProfile(user.id);
+        if (res2.error) throw res2.error;
+
+        // Guard: could still be null if RLS denies or something is wrong
+        if (!res2.data) {
+          setProfile(null);
+          setAvatarUrl(null);
+          return;
+        }
+
+        setProfile(res2.data);
+
+        if (res2.data.avatar_path) {
+          const url = await signedAvatarUrl(res2.data.avatar_path);
+          setAvatarUrl(url);
+        } else {
+          setAvatarUrl(null);
+        }
+
+        return;
       }
 
-      const res2 = await fetchMyProfile();
-      if (res2.error) throw res2.error;
+      // 3) Normal path
+      setProfile(res.data);
 
-      setProfile(res2.data);
-
-      if (res2.data.avatar_path) {
-        const url = await signedAvatarUrl(res2.data.avatar_path);
+      if (res.data.avatar_path) {
+        const url = await signedAvatarUrl(res.data.avatar_path);
         setAvatarUrl(url);
       } else {
         setAvatarUrl(null);

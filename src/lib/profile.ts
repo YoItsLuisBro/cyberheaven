@@ -6,11 +6,12 @@ export type Profile = {
   avatar_path: string | null;
 };
 
-export async function fetchMyProfile() {
+export async function fetchMyProfile(userId: string) {
   return supabase
     .schema("core")
     .from("profiles")
     .select("id, username, avatar_path")
+    .eq("id", userId)
     .maybeSingle();
 }
 
