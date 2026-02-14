@@ -15,15 +15,32 @@ export function Login() {
     setBusy(true);
 
     try {
-      // Step 3 will upgrade this to: username OR email login.
-      // For now: require email (keeps Step 1 simple + runnable).
+      const ident = identifier.trim();
+
+      // Resolve username -> email (or pass through if ident already looks like email)
+      const { data, error: rpcErr } = await supabase
+        .schema("core")
+        .rpc("login_email", { p_identifier: ident });
+
+      // If RPC fails (schema not exposed, function missing, etc.)
+      if (rpcErr) throw rpcErr;
+
+      // If ident is a username and it doesn't exist, data will be null.
+      // We keep the error message generic.
+      if (!data && !ident.includes("@")) {
+        throw new Error("Unknown username");
+      }
+
+      const loginEmail = (data ?? ident).trim().toLowerCase();
+
       const { error } = await supabase.auth.signInWithPassword({
-        email: identifier.trim(),
+        email: loginEmail,
         password,
       });
 
       if (error) throw error;
-      nav("/");
+
+      nav("/"); // or navigate("/"), depending on your hook variable name
     } catch {
       setErr("LOGIN FAILED. CHECK YOUR CREDENTIALS.");
     } finally {
