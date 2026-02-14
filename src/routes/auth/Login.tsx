@@ -17,21 +17,14 @@ export function Login() {
     try {
       const ident = identifier.trim();
 
-      // Resolve username -> email (or pass through if ident already looks like email)
-      const { data, error: rpcErr } = await supabase
+      // Resolve username -> email (or pass-through email) via secure RPC.
+      const { data: email, error: rpcErr } = await supabase
         .schema("core")
         .rpc("login_email", { p_identifier: ident });
 
-      // If RPC fails (schema not exposed, function missing, etc.)
       if (rpcErr) throw rpcErr;
 
-      // If ident is a username and it doesn't exist, data will be null.
-      // We keep the error message generic.
-      if (!data && !ident.includes("@")) {
-        throw new Error("Unknown username");
-      }
-
-      const loginEmail = (data ?? ident).trim().toLowerCase();
+      const loginEmail = (email ?? ident).trim().toLowerCase();
 
       const { error } = await supabase.auth.signInWithPassword({
         email: loginEmail,
@@ -39,10 +32,9 @@ export function Login() {
       });
 
       if (error) throw error;
-
-      nav("/"); // or navigate("/"), depending on your hook variable name
+      nav("/");
     } catch {
-      setErr("LOGIN FAILED. CHECK YOUR CREDENTIALS.");
+      setErr("LOGIN FAILED.");
     } finally {
       setBusy(false);
     }
@@ -58,13 +50,13 @@ export function Login() {
 
         <form onSubmit={onSubmit} className="form">
           <label className="label">
-            EMAIL (STEP 1)
+            USERNAME OR EMAIL
             <input
               className="input"
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
-              placeholder="you@domain.com"
-              autoComplete="email"
+              placeholder="username or you@domain.com"
+              autoComplete="username"
               required
             />
           </label>
@@ -87,8 +79,16 @@ export function Login() {
             {busy ? "WORKING…" : "LOG IN"}
           </button>
 
-          <div className="muted">
-            No account? <Link to="/signup">SIGN UP</Link>
+          <div
+            className="muted"
+            style={{ display: "flex", gap: 12, flexWrap: "wrap" }}
+          >
+            <span>
+              No account? <Link to="/signup">SIGN UP</Link>
+            </span>
+            <span>
+              Forgot? <Link to="/forgot">RESET PASSWORD</Link>
+            </span>
           </div>
         </form>
       </div>

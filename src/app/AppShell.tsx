@@ -2,8 +2,10 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 
 export function AppShell() {
-  const { user, signOut } = useAuth();
+  const { user, profile, avatarUrl, signOut } = useAuth();
   const navigate = useNavigate();
+
+  const displayName = profile?.username ?? user?.email ?? "—";
 
   async function handleLogout() {
     await signOut();
@@ -54,7 +56,18 @@ export function AppShell() {
         </nav>
 
         <div className="authchip">
-          <span className="chiptext">{user?.email ?? "—"}</span>
+          <div className="avatar" title={displayName}>
+            {avatarUrl ? (
+              <img className="avatarImg" src={avatarUrl} alt="avatar" />
+            ) : (
+              <div className="avatarFallback" aria-hidden="true">
+                {(displayName[0] ?? "U").toUpperCase()}
+              </div>
+            )}
+          </div>
+
+          <span className="chiptext">{displayName}</span>
+
           <button
             className="btn btn-ghost"
             onClick={handleLogout}

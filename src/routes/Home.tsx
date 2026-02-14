@@ -2,10 +2,9 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 
 export function Home() {
-  const { user } = useAuth();
+  const { user, profile, avatarUrl } = useAuth();
 
-  // Step 2 will replace this with your profiles.username + avatar.
-  const displayName = user?.email ?? "UNKNOWN USER";
+  const displayName = profile?.username ?? user?.email ?? "UNKNOWN USER";
 
   return (
     <div className="page">
@@ -13,12 +12,35 @@ export function Home() {
         <div>
           <div className="kicker">WELCOME</div>
           <h1 className="h1">CYBER HEAVEN</h1>
-          <div className="sub">
-            Signed in as: <span className="mono">{displayName}</span>
+
+          <div
+            style={{
+              display: "flex",
+              gap: 12,
+              alignItems: "center",
+              marginTop: 12,
+              flexWrap: "wrap",
+            }}
+          >
+            <div className="avatar avatar-lg">
+              {avatarUrl ? (
+                <img className="avatarImg" src={avatarUrl} alt="avatar" />
+              ) : (
+                <div className="avatarFallback" aria-hidden="true">
+                  {(displayName[0] ?? "U").toUpperCase()}
+                </div>
+              )}
+            </div>
+            <div className="sub">
+              USER: <span className="mono">{displayName}</span>
+              <div className="muted" style={{ marginTop: 6 }}>
+                EMAIL: <span className="mono">{user?.email ?? "—"}</span>
+              </div>
+            </div>
           </div>
-          <div className="note">
-            Step 2 adds: username + avatar upload + email verification
-            enforcement + username login.
+
+          <div className="note" style={{ marginTop: 14 }}>
+            Use PROFILE to set your username + upload an avatar.
           </div>
         </div>
 
