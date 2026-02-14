@@ -11,6 +11,8 @@ export function Signup() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (busy) return; // <- prevents double-click / double submit
+
     setMsg(null);
     setErr(null);
     setBusy(true);
@@ -24,7 +26,16 @@ export function Signup() {
         options: { emailRedirectTo: redirectTo },
       });
 
-      if (error) throw error;
+      if (error) {
+        // Helpful handling for rate limits
+        if (error.status === 429) {
+          setErr(
+            "RATE LIMITED BY AUTH. TOO MANY SIGNUPS/EMAILS SENT. USE CUSTOM SMTP OR TRY LATER.",
+          );
+          return;
+        }
+        throw error;
+      }
 
       setMsg("SIGNUP OK. CHECK YOUR EMAIL TO VERIFY, THEN COME BACK.");
     } catch {
