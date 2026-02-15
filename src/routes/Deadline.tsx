@@ -1,7 +1,7 @@
 import React from "react";
 import { Skeleton } from "../ui/Skeleton";
 import type { Task, TaskStatus } from "../lib/deadline";
-import { createTask, deleteTask, listTasks, updateTask } from "../lib/deadline";
+import { createTask, softDeleteTask, listTasks, updateTask } from "../lib/deadline";
 
 const LANES: { key: TaskStatus; label: string }[] = [
   { key: "TODAY", label: "TODAY" },
@@ -89,7 +89,7 @@ export function Deadline() {
 
   async function onDelete(t: Task) {
     setErr(null);
-    const res = await deleteTask(t.id);
+    const res = await softDeleteTask(t.id);
     if (res.error) setErr("FAILED TO DELETE.");
     await refresh();
   }

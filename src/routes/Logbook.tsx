@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/Skeleton";
 import type { Entry } from "../lib/logbook";
 import {
   createEntry,
-  deleteEntry,
+  softDeleteEntry,
   listEntries,
   updateEntry,
 } from "../lib/logbook";
@@ -124,7 +124,7 @@ export function Logbook() {
     setBusy(true);
 
     try {
-      const res = await deleteEntry(selected.id);
+      const res = await softDeleteEntry(selected.id);
       if (res.error) throw res.error;
 
       setSelectedId(null);
