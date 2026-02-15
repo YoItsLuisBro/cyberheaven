@@ -64,6 +64,13 @@ export function Home() {
               <div className="cardcta">ENTER →</div>
             </div>
           </Link>
+          <Link to="/settings" className="cardlink">
+            <div className="card">
+              <div className="cardtitle">ACCOUT SETTINGS</div>
+              <div className="cardbody">EMAIL. PASSWORD. DATA PURGE. NO FLUFF.</div>
+              <div className="cardcta">OPEN →</div>
+            </div>
+          </Link>
         </div>
       </div>
     </div>

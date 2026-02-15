@@ -53,6 +53,14 @@ export function AppShell() {
           >
             PROFILE
           </NavLink>
+          <NavLink
+            to="/settings"
+            className={({ isActive }) =>
+              isActive ? "navlink active" : "navlink"
+            }
+          >
+            SETTINGS
+          </NavLink>
         </nav>
 
         <div className="authchip">

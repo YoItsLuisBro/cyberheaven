@@ -12,6 +12,7 @@ import { Login } from "./routes/auth/Login";
 import { ResetPassword } from "./routes/auth/ResetPassword";
 import { Signup } from "./routes/auth/Signup";
 import { VerifyEmail } from "./routes/auth/VerifyEmail";
+import { Settings } from "./routes/Settings";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
 
   { path: "/auth/callback", element: <AuthCallback /> },
   { path: "/auth/reset", element: <ResetPassword /> },
+  
 
   // Signed in but not verified can access this
   {
@@ -44,6 +46,7 @@ export const router = createBrowserRouter([
       { path: "deadline", element: <Deadline /> },
       { path: "logbook", element: <Logbook /> },
       { path: "profile", element: <Profile /> },
+      { path: "/settings", element: <Settings /> },
     ],
   },
 ]);
