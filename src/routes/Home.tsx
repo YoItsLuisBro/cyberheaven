@@ -67,7 +67,7 @@ export function Home() {
             <div className="card">
               <div className="cardtitle">DEADLINE MACHINE</div>
               <div className="cardbody">
-                Task board + focus timer. Loud labels. Hard dividers.
+                TASK BOARD. LOUD LABELS. HARD DIVIDER.
               </div>
               <div className="cardcta">ENTER →</div>
             </div>
@@ -77,7 +77,7 @@ export function Home() {
             <div className="card">
               <div className="cardtitle">BRUTAL LOGBOOK</div>
               <div className="cardbody">
-                Journal entries. Brutal composer. Zero fluff.
+                JOURNAL ENTRIES. BRUTAL COMPOSER. ZERO FLUFF
               </div>
               <div className="cardcta">ENTER →</div>
             </div>

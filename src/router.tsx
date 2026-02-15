@@ -5,7 +5,7 @@ import { VerifiedRoute } from "./app/VerifiedRoute";
 import { Deadline } from "./routes/Deadline";
 import { Home } from "./routes/Home";
 import { Logbook } from "./routes/Logbook";
-import { Profile } from "./routes/Profile";
+// import { Profile } from "./routes/Profile";
 import { AuthCallback } from "./routes/auth/AuthCallback";
 import { ForgotPassword } from "./routes/auth/ForgotPassword";
 import { Login } from "./routes/auth/Login";
@@ -13,6 +13,7 @@ import { ResetPassword } from "./routes/auth/ResetPassword";
 import { Signup } from "./routes/auth/Signup";
 import { VerifyEmail } from "./routes/auth/VerifyEmail";
 import { Settings } from "./routes/Settings";
+import { ProfileRedirect } from "./routes/ProfileRedirect";
 
 export const router = createBrowserRouter([
   { path: "/login", element: <Login /> },
@@ -45,7 +46,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "deadline", element: <Deadline /> },
       { path: "logbook", element: <Logbook /> },
-      { path: "profile", element: <Profile /> },
+      { path: "profile", element: <ProfileRedirect /> },
       { path: "/settings", element: <Settings /> },
     ],
   },

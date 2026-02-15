@@ -1,14 +1,29 @@
+import React from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 import { supabase } from "../lib/supabase";
 import { useToast } from "../ui/toast";
 
+function cx(active: boolean) {
+  return active ? "navlink active" : "navlink";
+}
+
 export function AppShell() {
-  const toast = useToast();
   const { user, profile, avatarUrl, signOut, isVerified } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
+
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
   const displayName = profile?.username ?? user?.email ?? "—";
+
+  React.useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setMenuOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   async function handleLogout() {
     await signOut();
@@ -44,45 +59,16 @@ export function AppShell() {
         </Link>
 
         <nav className="nav">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              isActive ? "navlink active" : "navlink"
-            }
-          >
+          <NavLink to="/" end className={({ isActive }) => cx(isActive)}>
             HOME
           </NavLink>
-          <NavLink
-            to="/deadline"
-            className={({ isActive }) =>
-              isActive ? "navlink active" : "navlink"
-            }
-          >
+          <NavLink to="/deadline" className={({ isActive }) => cx(isActive)}>
             DEADLINE
           </NavLink>
-          <NavLink
-            to="/logbook"
-            className={({ isActive }) =>
-              isActive ? "navlink active" : "navlink"
-            }
-          >
+          <NavLink to="/logbook" className={({ isActive }) => cx(isActive)}>
             LOGBOOK
           </NavLink>
-          <NavLink
-            to="/profile"
-            className={({ isActive }) =>
-              isActive ? "navlink active" : "navlink"
-            }
-          >
-            PROFILE
-          </NavLink>
-          <NavLink
-            to="/settings"
-            className={({ isActive }) =>
-              isActive ? "navlink active" : "navlink"
-            }
-          >
+          <NavLink to="/settings" className={({ isActive }) => cx(isActive)}>
             SETTINGS
           </NavLink>
         </nav>
@@ -98,30 +84,97 @@ export function AppShell() {
             )}
           </div>
 
-          <div className={isVerified ? "statustag ok" : "statustag warn"}>
-            {isVerified ? "VERIFIED" : "UNVERIFIED"}
-          </div>
-
-          {!isVerified ? (
-            <button
-              className="btn btn-ghost"
-              type="button"
-              onClick={resendVerification}
-            >
-              RESEND
-            </button>
-          ) : null}
-
           <span className="chiptext">{displayName}</span>
 
           <button
-            className="btn btn-ghost"
+            className="btn btn-ghost logoutBtn"
             onClick={handleLogout}
             type="button"
           >
             LOG OUT
           </button>
+
+          <button
+            className="btn btn-ghost menuBtn"
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            MENU
+          </button>
         </div>
+
+        {menuOpen ? (
+          <>
+            <div className="menuBackdrop" onClick={() => setMenuOpen(false)} />
+            <div
+              className="mobileMenu"
+              role="dialog"
+              aria-label="Menu"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mobileMenuHead">
+                <div className="mono">NODE: NAV</div>
+                <button
+                  className="btn btn-ghost"
+                  type="button"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  CLOSE
+                </button>
+              </div>
+
+              <div className="mobileMenuLinks">
+                <NavLink
+                  to="/"
+                  end
+                  className={({ isActive }) => cx(isActive)}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  HOME
+                </NavLink>
+                <NavLink
+                  to="/deadline"
+                  className={({ isActive }) => cx(isActive)}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  DEADLINE
+                </NavLink>
+                <NavLink
+                  to="/logbook"
+                  className={({ isActive }) => cx(isActive)}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  LOGBOOK
+                </NavLink>
+                <NavLink
+                  to="/settings"
+                  className={({ isActive }) => cx(isActive)}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  SETTINGS
+                </NavLink>
+              </div>
+
+              {!isVerified ? (
+                <button
+                  className="btn"
+                  type="button"
+                  onClick={resendVerification}
+                >
+                  RESEND VERIFICATION
+                </button>
+              ) : null}
+
+              <button
+                className="btn btn-ghost"
+                type="button"
+                onClick={handleLogout}
+              >
+                LOG OUT
+              </button>
+            </div>
+          </>
+        ) : null}
       </header>
 
       <main className="main">

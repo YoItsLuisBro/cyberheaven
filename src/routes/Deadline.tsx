@@ -114,7 +114,7 @@ export function Deadline() {
       >
         <div>
           <div className="kicker">MODULE</div>
-          <h1 className="h2">DEADLINE BRUTAL</h1>
+          <h1 className="h2">DEADLINE MACHINE</h1>
         </div>
 
         <button className="btn btn-ghost" type="button" onClick={refresh}>

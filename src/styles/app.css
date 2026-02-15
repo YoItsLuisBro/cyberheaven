@@ -1,28 +1,40 @@
+/* =========================================================
+   CYBER HEAVEN — GLOBAL STYLES (BRUTALIST)
+   Theme: Black background, white text, acid-green accent
+   ========================================================= */
+
+/* -----------------------------
+   0) Base + CSS Variables
+   Affects: entire site
+------------------------------ */
 :root {
-  --bg: #000000;
-  --panel: #000000;
-  --ink: #ffffff;
-  --muted: #ffffff;
-  --acid: #b6ff3b;
-  --warn: #ff3b3b;
-  --line: #ffffff;
-  --shadow: 6px 6px 0 rgba(255, 255, 255, 0.18);
-  --radius: 0px;
-  --mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+  --bg: #000;
+  --ink: #fff; /* main text */
+  --acid: #b6ff3b; /* accent green */
+  --line: #fff; /* borders */
+  --warn: #ffb020; /* warning (amber) */
+
+  --shadow: 6px 6px 0 var(--line);
+
   --sans:
     ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial,
     "Apple Color Emoji", "Segoe UI Emoji";
+  --mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
+  --pad: clamp(12px, 2vw, 18px); /* responsive padding */
+  --maxw: 1160px; /* desktop content width cap*/
 }
 
 * {
   box-sizing: border-box;
 }
-html,
-body {
-  height: 100%;
+
+html {
+  -webkit-text-size-adjust: 100%; /* iOS text resizing control */
 }
+
 body {
   margin: 0;
   background: var(--bg);
@@ -30,258 +42,295 @@ body {
   font-family: var(--sans);
 }
 
+/* Affects: links across the site */
 a {
-  color: inherit;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+a:hover {
+  border-bottom-color: var(--acid);
 }
 
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+/* -----------------------------
+   1) Typography Utilities
+   Affects: headings, labels, helper text
+------------------------------ */
+.mono {
+  font-family: var(--mono);
+}
+.muted {
+  opacity: 0.78;
+}
+.sub {
+  opacity: 0.92;
+}
+
+.kicker {
+  background: var(--acid);
+  font-weight: 1000;
+  color: #000;
+  display: inline-block;
+  padding: 6px 10px;
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.h1 {
+  margin: 6px 0 0;
+  font-weight: 1000;
+  letter-spacing: 0.06em;
+  font-size: clamp(32px, 5vw, 54px);
+  line-height: 1.02;
+}
+
+.h2 {
+  margin: 6px 0 0;
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.05;
+}
+
+/* Affects: informational blocks / error blocks */
+.note {
+  border: 2px solid var(--line);
+  background: #000;
+  box-shadow: var(--shadow);
+  padding: 10px 12px;
+  font-family: var(--mono);
+  opacity: 0.95;
+}
+
+.error {
+  border: 2px solid var(--line);
+  background: #000;
+  box-shadow: var(--shadow);
+  padding: 10px 12px;
+  font-family: var(--mono);
+}
+
+.ok {
+  border: 2px solid var(--acid);
+  color: var(--acid);
+  background: #000;
+  box-shadow: var(--shadow);
+  padding: 10px 12px;
+  font-family: var(--mono);
+}
+
+/* -----------------------------
+   2) Layout: Shell / Page
+   Affects: AppShell layout + general page padding
+------------------------------ */
 .shell {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
+
+.page {
+  padding: var(--pad);
+}
+
+.main {
+  width: 100%;
+}
+
+@media (min-width: 1100px) {
+  /* center main content blocks */
+  .page {
+    max-width: var(--maxw);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* center the sticky header content */
+  .topbar {
+    max-width: var(--maxw);
+    margin-left: auto;
+    margin-right: auto;
+
+    /* keeps header feeling like part of the "boxed" app */
+    border-left: 2px solid var(--line);
+    border-right: 2px solid var(--line);
+  }
+}
+
+/* -----------------------------
+   3) Buttons, Inputs, Forms
+   Affects: all forms (Auth, Deadline, Logbook, Profile)
+------------------------------ */
+.label {
+  display: grid;
+  gap: 8px;
+  font-family: var(--mono);
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+}
+
+.input {
+  border: 2px solid var(--line);
+  background: #000;
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  padding: 12px 12px;
+  outline: none;
+  width: 100%;
+  min-height: 44px; /* tap target */
+}
+
+.input::placeholder {
+  opacity: 0.6;
+}
+
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.35;
+}
+
+.textarea-tall {
+  min-height: 320px;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.btn {
+  border: 2px solid var(--line);
+  background: var(--acid);
+  color: #000;
+  border-color: var(--acid);
+  box-shadow: var(--shadow);
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  min-height: 44px; /* tap target */
+}
+
+.btn:hover {
+  border-color: var(--acid);
+  filter: brightness(1.05)
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+/* Fix dropdown readability (Deadline lane select + other selects) */
+select.input {
+  background: #000;
+  color: var(--ink);
+}
+select.input option {
+  background: #000;
+  color: var(--ink);
+}
+
+/* -----------------------------
+   4) Header / Nav (AppShell)
+   Affects: top header, brand, nav links, auth chip
+------------------------------ */
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 60;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.92);
+
   display: flex;
-  gap: 14px;
   align-items: center;
-  padding: 14px 16px;
-  background: rgba(0, 0, 0, 0.98);
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px var(--pad);
   border-bottom: 2px solid var(--line);
 }
 
 .brand {
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-decoration: none;
+  font-family: var(--mono);
+  letter-spacing: 0.22em;
+  font-weight: 1000;
+  border: 2px solid var(--line);
   padding: 10px 12px;
-  border: 2px solid var(--ink);
   box-shadow: var(--shadow);
-  background: var(--panel);
 }
 
 .nav {
   display: flex;
   gap: 10px;
-  align-items: center;
-  flex: 1;
   flex-wrap: wrap;
 }
+
 .navlink {
-  text-decoration: none;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  font-size: 12px;
-  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 2px solid var(--line);
-  background: transparent;
+  padding: 10px 12px;
+  background: #000;
+  box-shadow: var(--shadow);
+  font-family: var(--mono);
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  min-height: 44px; /* tap target */
 }
+
 .navlink.active {
   border-color: var(--acid);
-  box-shadow: var(--shadow);
+  color: var(--acid);
 }
 
 .authchip {
+  margin-left: auto;
   display: flex;
-  gap: 10px;
   align-items: center;
-}
-.chiptext {
-  font-family: var(--mono);
-  font-size: 12px;
-  padding: 10px 12px;
-  border: 2px solid var(--line);
-  background: transparent;
-  max-width: 260px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.main {
-  flex: 1;
-  padding: 18px 16px 40px;
-}
-
-.page {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.hero {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.h1 {
-  margin: 6px 0 8px;
-  font-size: 52px;
-  line-height: 1;
-  letter-spacing: 0.02em;
-}
-.h2 {
-  margin: 6px 0 10px;
-  font-size: 28px;
-  letter-spacing: 0.04em;
-}
-.kicker {
-  display: inline-block;
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  font-size: 12px;
-  padding: 8px 10px;
-  background: var(--acid);
-  color: #000;
-  border: 2px solid #000;
-}
-
-.sub {
-  color: var(--ink);
-  font-family: var(--mono);
-  margin-top: 10px;
-}
-.note {
-  margin-top: 10px;
-  color: var(--ink);
-  border-left: 4px solid var(--line);
-  padding: 10px 12px;
-  background: transparent;
-}
-
-.grid2 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 14px;
-  flex: 1;
-  min-width: 320px;
-}
-@media (max-width: 840px) {
-  .h1 {
-    font-size: 40px;
-  }
-  .grid2 {
-    grid-template-columns: 1fr;
-  }
-  .chiptext {
-    display: none;
-  }
-}
-
-.cardlink {
-  text-decoration: none;
-}
-.card {
-  border: 2px solid var(--ink);
-  background: var(--panel);
-  box-shadow: var(--shadow);
-  padding: 16px;
-  min-height: 160px;
-  display: flex;
-  flex-direction: column;
   gap: 10px;
-}
-.cardtitle {
-  font-weight: 950;
-  letter-spacing: 0.12em;
-  font-size: 14px;
-}
-.cardbody {
-  color: var(--ink);
-}
-.cardcta {
-  margin-top: auto;
-  font-family: var(--mono);
-  font-weight: 900;
-  letter-spacing: 0.12em;
+  flex-wrap: wrap;
 }
 
-.authpage {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 16px;
-}
-.authcard {
-  width: min(520px, 100%);
-  border: 2px solid var(--ink);
+/* Verified/Unverified tag in header */
+.statustag {
+  font-family: var(--mono);
+  font-weight: 950;
+  letter-spacing: 0.16em;
+  font-size: 11px;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  background: #000;
+  white-space: nowrap;
   box-shadow: var(--shadow);
-  background: var(--panel);
-  padding: 16px;
 }
-.authheader {
-  margin-bottom: 12px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.label {
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.input {
-  font-family: var(--mono);
-  padding: 12px;
-  border: 2px solid var(--line);
-  background: transparent;
-  color: var(--ink);
-  outline: none;
-}
-.input:focus {
+.statustag.ok {
   border-color: var(--acid);
+  color: var(--acid);
+}
+.statustag.warn {
+  border-color: var(--warn);
+  color: var(--warn);
 }
 
-.btn {
-  padding: 12px;
-  border: 2px solid #000;
-  background: var(--acid);
-  color: #000;
-  font-weight: 950;
-  letter-spacing: 0.12em;
-  cursor: pointer;
-}
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-.btn-ghost {
-  padding: 10px 12px;
-  border: 2px solid var(--line);
-  background: transparent;
-  color: var(--ink);
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  cursor: pointer;
-}
-
-.error {
-  border: 2px solid var(--warn);
-  padding: 10px 12px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-}
-.ok {
-  border: 2px solid var(--acid);
-  padding: 10px 12px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-}
-.muted {
-  color: var(--ink);
-  font-family: var(--mono);
-}
-.mono {
-  font-family: var(--mono);
-}
-
+/* -----------------------------
+   5) Avatar (header + home + profile)
+   Affects: avatar circle + fallback letter
+------------------------------ */
 .avatar {
   width: 36px;
   height: 36px;
@@ -307,184 +356,94 @@ a {
 
 .avatarFallback {
   font-family: var(--mono);
-  font-weight: 900;
+  font-weight: 1000;
   letter-spacing: 0.08em;
   color: var(--ink);
 }
 
-.board {
+/* -----------------------------
+   6) Home Page
+   Affects: hero + module cards
+------------------------------ */
+.hero {
   display: grid;
-  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
   gap: 12px;
 }
 
-@media (max-width: 1100px) {
-  .board {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-  }
-}
-@media (max-width: 640px) {
-  .board {
+@media (max-width: 900px) {
+  .grid2 {
     grid-template-columns: 1fr;
   }
 }
 
-.lane {
+.cardlink {
+  display: block;
+}
+
+.card {
   border: 2px solid var(--line);
   background: #000;
   box-shadow: var(--shadow);
-  min-height: 260px;
-  display: flex;
-  flex-direction: column;
-}
-
-.lanehead {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  border-bottom: 2px solid var(--line);
-}
-
-.lanetitle {
-  font-weight: 950;
-  letter-spacing: 0.14em;
-  font-size: 12px;
-}
-
-.lanecount {
-  font-family: var(--mono);
-  border: 2px solid var(--line);
-  padding: 6px 10px;
-}
-
-.lanebody {
   padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.empty {
-  color: var(--ink);
-  opacity: 0.7;
-  font-family: var(--mono);
-  border: 2px dashed var(--line);
-  padding: 10px 12px;
-}
-
-.task {
-  border: 2px solid var(--line);
-  background: #000;
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.task-overdue {
-  border-color: var(--warn);
-}
-
-.tasktitle {
-  font-weight: 950;
-  letter-spacing: 0.06em;
-}
-
-.taskmeta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.tag {
-  font-family: var(--mono);
-  font-size: 12px;
-  border: 2px solid var(--line);
-  padding: 6px 10px;
-}
-
-.tag-warn {
-  border-color: var(--warn);
-}
-
-.taskactions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
-.textarea {
   min-height: 140px;
-  resize: vertical;
+  display: grid;
+  gap: 10px;
+}
+
+.cardtitle {
+  font-family: var(--mono);
+  letter-spacing: 0.18em;
+  font-weight: 1000;
+  font-size: 12px;
+}
+
+.cardbody {
+  font-family: var(--mono);
+  opacity: 0.9;
   line-height: 1.35;
 }
 
-.textarea-tall {
-  min-height: 320px;
+.cardcta {
+  font-family: var(--mono);
+  letter-spacing: 0.16em;
+  font-weight: 950;
+  color: var(--acid);
 }
 
-.loggrid {
+/* -----------------------------
+   7) Auth Pages (Login/Signup/Forgot/Verify)
+   Affects: centered auth card layout
+------------------------------ */
+.authpage {
+  min-height: calc(100vh - 2px);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  place-items: center;
+  padding: var(--pad);
 }
 
-.logpanel-wide {
-  grid-column: 1 / -1;
-}
-
-@media (max-width: 980px) {
-  .loggrid {
-    grid-template-columns: 1fr;
-  }
-  .logpanel-wide {
-    grid-column: auto;
-  }
-}
-
-.loglist {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.logitem {
-  text-align: left;
+.authcard {
+  width: min(520px, 100%);
   border: 2px solid var(--line);
   background: #000;
-  color: var(--ink);
-  padding: 10px 12px;
-  cursor: pointer;
-}
-
-.logitem.active {
-  border-color: var(--acid);
   box-shadow: var(--shadow);
+  padding: 14px;
+  position: relative;
 }
 
-.logitemTop {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.authheader {
   margin-bottom: 10px;
 }
 
-.logitemBody {
-  font-family: var(--mono);
-  opacity: 0.9;
-}
-
-.logmetaRow {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  align-items: flex-end;
-}
-
-/* --- CYBER HEAVEN LOGIN: BOOT BAR + WATERMARK + SCANLINES --- */
-
+/* -----------------------------
+   8) "Cyber" Login extras (Boot bar + watermark + scanlines)
+   Affects: Login page only when you use authpage-cyber class
+------------------------------ */
 .acid {
   color: var(--acid);
 }
@@ -538,7 +497,7 @@ a {
   }
 }
 
-/* Boot banner */
+/* Boot banner strip above auth card */
 .bootbar {
   width: min(520px, 100%);
   border: 2px solid var(--line);
@@ -555,7 +514,6 @@ a {
   display: grid;
   gap: 4px;
 }
-
 .bootcol-right {
   text-align: right;
 }
@@ -563,7 +521,7 @@ a {
 .bootk {
   font-family: var(--mono);
   letter-spacing: 0.18em;
-  font-weight: 900;
+  font-weight: 950;
   font-size: 11px;
   opacity: 0.85;
 }
@@ -571,11 +529,11 @@ a {
 .bootv {
   font-family: var(--mono);
   letter-spacing: 0.14em;
-  font-weight: 900;
+  font-weight: 950;
   font-size: 12px;
 }
 
-/* Watermark behind the card */
+/* Watermark behind auth card */
 .cybercard {
   position: relative;
   overflow: hidden;
@@ -615,7 +573,6 @@ a {
   z-index: 1;
 }
 
-/* Footer line inside the card */
 .authfooter {
   margin-top: 14px;
   padding-top: 12px;
@@ -627,17 +584,181 @@ a {
   opacity: 0.9;
 }
 
-/* Fix dropdown readability (Deadline lane select + any other selects) */
-select.input {
-  background: #000;
-  color: var(--ink);
+/* -----------------------------
+   9) Deadline Board
+   Affects: /deadline module lanes + tasks
+------------------------------ */
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 12px;
 }
 
-select.input option {
-  background: #000;
-  color: var(--ink);
+@media (max-width: 1100px) {
+  .board {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .board {
+    grid-template-columns: 1fr;
+  }
 }
 
+.lane {
+  border: 2px solid var(--line);
+  background: #000;
+  box-shadow: var(--shadow);
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lanehead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--line);
+}
+
+.lanetitle {
+  font-weight: 1000;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  font-family: var(--mono);
+}
+
+.lanecount {
+  font-family: var(--mono);
+  border: 2px solid var(--line);
+  padding: 6px 10px;
+}
+
+.lanebody {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty {
+  color: var(--ink);
+  opacity: 0.7;
+  font-family: var(--mono);
+  border: 2px dashed var(--line);
+  padding: 10px 12px;
+}
+
+.task {
+  border: 2px solid var(--line);
+  background: #000;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-overdue {
+  border-color: var(--warn);
+}
+
+.tasktitle {
+  font-weight: 1000;
+  letter-spacing: 0.06em;
+}
+
+.taskmeta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  border: 2px solid var(--line);
+  padding: 6px 10px;
+}
+
+.tag-warn {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.taskactions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+/* -----------------------------
+   10) Logbook Module
+   Affects: /logbook composer, list, editor layout
+------------------------------ */
+.loggrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.logpanel-wide {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 980px) {
+  .loggrid {
+    grid-template-columns: 1fr;
+  }
+  .logpanel-wide {
+    grid-column: auto;
+  }
+}
+
+.loglist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.logitem {
+  text-align: left;
+  border: 2px solid var(--line);
+  background: #000;
+  color: var(--ink);
+  padding: 10px 12px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.logitem.active {
+  border-color: var(--acid);
+}
+
+.logitemTop {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.logitemBody {
+  font-family: var(--mono);
+  opacity: 0.9;
+}
+
+.logmetaRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+/* -----------------------------
+   11) Toasts (global notifications)
+   Affects: bottom-right toast messages
+------------------------------ */
 .toastStack {
   position: fixed;
   right: 12px;
@@ -662,7 +783,7 @@ select.input option {
 .toastK {
   font-family: var(--mono);
   letter-spacing: 0.18em;
-  font-weight: 950;
+  font-weight: 1000;
   border: 2px solid var(--line);
   padding: 6px 8px;
   text-align: center;
@@ -698,7 +819,10 @@ select.input option {
   opacity: 0.95;
 }
 
-/* --- Skeletons --- */
+/* -----------------------------
+   12) Skeletons (loading states)
+   Affects: loading placeholders on Home/Deadline/Logbook/Profile
+------------------------------ */
 .skel {
   border: 2px solid var(--line);
   background: #000;
@@ -729,23 +853,153 @@ select.input option {
   }
 }
 
-.statustag{
-  font-family: var(--mono);
-  font-weight: 950;
-  letter-spacing: .16em;
-  font-size: 11px;
-  padding: 10px 12px;
-  border: 2px solid var(--line);
-  background: #000;
-  white-space: nowrap;
+/* -----------------------------
+   13) Mobile Menu (AppShell)
+   Affects: phones — replaces header nav with MENU button + panel
+------------------------------ */
+.menuBtn {
+  display: none;
 }
 
-.statustag.ok{
+.menuBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 80;
+}
+
+.mobileMenu {
+  position: fixed;
+  right: 12px;
+  top: calc(56px + env(safe-area-inset-top));
+  width: min(320px, calc(100vw - 24px));
+  border: 2px solid var(--line);
+  background: #000;
+  box-shadow: var(--shadow);
+  z-index: 90;
+  padding: 12px;
+  display: grid;
+  gap: 12px;
+}
+
+.mobileMenuHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--line);
+}
+
+.mobileMenuLinks {
+  display: grid;
+  gap: 10px;
+}
+
+.mobileMenuLinks .navlink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid var(--line);
+  padding: 10px 12px;
+  background: #000;
+}
+
+/* Phones: hide full nav + shrink header clutter */
+@media (max-width: 760px) {
+  .nav {
+    display: none;
+  }
+  .menuBtn {
+    display: inline-flex;
+  }
+
+  .chiptext {
+    display: none;
+  }
+  .logoutBtn {
+    display: none;
+  }
+  .resendBtn {
+    display: none;
+  }
+}
+
+/* iPad-ish: keep nav but clamp name */
+@media (min-width: 761px) and (max-width: 1024px) {
+  .chiptext {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* iOS safe-area bottom padding */
+@supports (padding: max(0px)) {
+  .page {
+    padding-bottom: max(var(--pad), env(safe-area-inset-bottom));
+  }
+}
+
+/* -----------------------------
+   ACID ACCENTS (more green, still brutal)
+   Affects: focus, hover, selection, card headers, subtle highlights
+------------------------------ */
+
+/* Text selection gets acid green */
+::selection {
+  background: var(--acid);
+  color: #000;
+}
+
+/* Strong focus states (keyboard + accessibility) */
+.btn:focus-visible,
+.input:focus-visible,
+.navlink:focus-visible,
+.brand:focus-visible {
   border-color: var(--acid);
+  box-shadow: 6px 6px 0 var(--acid);
+  outline: none;
+}
+
+/* Hover accents */
+.btn:hover,
+.navlink:hover,
+.brand:hover {
+  border-color: var(--acid);
+}
+
+/* Makes the brand "feel alive" */
+.brand:hover {
   color: var(--acid);
 }
 
-.statustag.warn{
-  border-color: var(--warn);
-  color: var(--warn);
+/* Card headers get an acid underline */
+.cardtitle {
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--acid);
+}
+
+/* Active list items feel more cyber */
+.logitem.active {
+  border-color: var(--acid);
+  box-shadow: 6px 6px 0 var(--acid);
+}
+
+/* Inputs subtly glow on hover (keeps it crisp) */
+.input:hover {
+  border-color: rgba(182, 255, 59, 0.75);
+}
+
+/* Optional: add an acid scrollbar for Chromium browsers */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--acid);
+  border: 2px solid #000;
 }
