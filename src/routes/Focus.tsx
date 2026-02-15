@@ -1,4 +1,3 @@
-import React from "react";
 import { useFocus } from "../lib/focus";
 
 function pct(n: number) {
