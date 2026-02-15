@@ -626,3 +626,14 @@ a {
   flex-wrap: wrap;
   opacity: 0.9;
 }
+
+/* Fix dropdown readability (Deadline lane select + any other selects) */
+select.input{
+  background: #000;
+  color: var(--ink);
+}
+
+select.input option{
+  background: #000;
+  color: var(--ink);
+}
