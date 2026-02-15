@@ -5,13 +5,16 @@ import { AuthProvider } from "./lib/auth";
 import { router } from "./router";
 import { ToastProvider } from "./ui/toast";
 import "./styles/app.css";
+import { ErrorBoundary } from "./app/ErrorBoundary";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ToastProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    </ToastProvider>
+    <ErrorBoundary>
+      <ToastProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </ToastProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
 );
