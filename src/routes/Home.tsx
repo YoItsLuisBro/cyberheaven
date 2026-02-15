@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../lib/auth";
+import { Skeleton } from "../ui/Skeleton";
 
 export function Home() {
-  const { user, profile, avatarUrl } = useAuth();
+  const { user, profile, avatarUrl, profileLoading } = useAuth();
 
   const displayName = profile?.username ?? user?.email ?? "UNKNOWN USER";
 
@@ -27,15 +28,32 @@ export function Home() {
                 <img className="avatarImg" src={avatarUrl} alt="avatar" />
               ) : (
                 <div className="avatarFallback" aria-hidden="true">
-                  {(displayName[0] ?? "U").toUpperCase()}
+                  {(
+                    (profile?.username ?? user?.email ?? "U")[0] ?? "U"
+                  ).toUpperCase()}
                 </div>
               )}
             </div>
+
             <div className="sub">
-              USER: <span className="mono">{displayName}</span>
-              <div className="muted" style={{ marginTop: 6 }}>
-                EMAIL: <span className="mono">{user?.email ?? "—"}</span>
-              </div>
+              {profileLoading ? (
+                <>
+                  <div style={{ marginBottom: 6 }}>
+                    <Skeleton h={16} w={260} />
+                  </div>
+                  <Skeleton h={14} w={320} />
+                </>
+              ) : (
+                <>
+                  USER:{" "}
+                  <span className="mono">
+                    {displayName}
+                  </span>
+                  <div className="muted" style={{ marginTop: 6 }}>
+                    EMAIL: <span className="mono">{user?.email ?? "—"}</span>
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -67,7 +85,9 @@ export function Home() {
           <Link to="/settings" className="cardlink">
             <div className="card">
               <div className="cardtitle">ACCOUT SETTINGS</div>
-              <div className="cardbody">EMAIL. PASSWORD. DATA PURGE. NO FLUFF.</div>
+              <div className="cardbody">
+                EMAIL. PASSWORD. DATA PURGE. NO FLUFF.
+              </div>
               <div className="cardcta">OPEN →</div>
             </div>
           </Link>

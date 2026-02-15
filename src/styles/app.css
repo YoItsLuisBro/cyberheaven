@@ -697,3 +697,55 @@ select.input option {
   font-family: var(--mono);
   opacity: 0.95;
 }
+
+/* --- Skeletons --- */
+.skel {
+  border: 2px solid var(--line);
+  background: #000;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.skel::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: skelSweep 1.15s linear infinite;
+}
+
+@keyframes skelSweep {
+  from {
+    transform: translateX(-35%);
+  }
+  to {
+    transform: translateX(35%);
+  }
+}
+
+.statustag{
+  font-family: var(--mono);
+  font-weight: 950;
+  letter-spacing: .16em;
+  font-size: 11px;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  background: #000;
+  white-space: nowrap;
+}
+
+.statustag.ok{
+  border-color: var(--acid);
+  color: var(--acid);
+}
+
+.statustag.warn{
+  border-color: var(--warn);
+  color: var(--warn);
+}

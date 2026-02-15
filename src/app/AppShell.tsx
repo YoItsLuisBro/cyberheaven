@@ -1,8 +1,11 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/auth";
+import { supabase } from "../lib/supabase";
+import { useToast } from "../ui/toast";
 
 export function AppShell() {
-  const { user, profile, avatarUrl, signOut } = useAuth();
+  const toast = useToast();
+  const { user, profile, avatarUrl, signOut, isVerified } = useAuth();
   const navigate = useNavigate();
 
   const displayName = profile?.username ?? user?.email ?? "—";
@@ -10,6 +13,27 @@ export function AppShell() {
   async function handleLogout() {
     await signOut();
     navigate("/login");
+  }
+
+  async function resendVerification() {
+    try {
+      const email = user?.email;
+      if (!email) return;
+
+      const site =
+        (import.meta.env.VITE_SITE_URL as string) ?? window.location.origin;
+
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email,
+        options: { emailRedirectTo: `${site}/auth/callback` },
+      });
+
+      if (error) throw error;
+      toast.push("OK", "VERIFICATION EMAIL SENT.");
+    } catch {
+      toast.push("ERR", "FAILED TO RESEND VERIFICATION.");
+    }
   }
 
   return (
@@ -73,6 +97,20 @@ export function AppShell() {
               </div>
             )}
           </div>
+
+          <div className={isVerified ? "statustag ok" : "statustag warn"}>
+            {isVerified ? "VERIFIED" : "UNVERIFIED"}
+          </div>
+
+          {!isVerified ? (
+            <button
+              className="btn btn-ghost"
+              type="button"
+              onClick={resendVerification}
+            >
+              RESEND
+            </button>
+          ) : null}
 
           <span className="chiptext">{displayName}</span>
 

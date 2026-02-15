@@ -1,4 +1,5 @@
 import React from "react";
+import { Skeleton } from "../ui/Skeleton";
 import type { Task, TaskStatus } from "../lib/deadline";
 import { createTask, deleteTask, listTasks, updateTask } from "../lib/deadline";
 
@@ -176,86 +177,101 @@ export function Deadline() {
       </div>
 
       {loading ? (
-        <div className="page" style={{ marginTop: 14 }}>
-          LOADING…
-        </div>
-      ) : null}
-
-      <div className="board" style={{ marginTop: 14 }}>
-        {LANES.map((lane) => {
-          const items = byLane.get(lane.key) ?? [];
-          return (
-            <section key={lane.key} className="lane">
+        <div className="board" style={{ marginTop: 14 }}>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <section key={i} className="lane">
               <div className="lanehead">
-                <div className="lanetitle">{lane.label}</div>
-                <div className="lanecount">{items.length}</div>
+                <Skeleton h={18} w={120} />
+                <Skeleton h={18} w={42} />
               </div>
-
               <div className="lanebody">
-                {items.length === 0 ? (
-                  <div className="empty">EMPTY.</div>
-                ) : null}
-
-                {items.map((t) => {
-                  const overdue = isOverdue(t.due_date);
-                  return (
-                    <div
-                      key={t.id}
-                      className={overdue ? "task task-overdue" : "task"}
-                    >
-                      <div className="tasktitle">{t.title}</div>
-
-                      <div className="taskmeta">
-                        <span className="tag">{laneTitle(t.status)}</span>
-                        {t.due_date ? (
-                          <span className={overdue ? "tag tag-warn" : "tag"}>
-                            DUE {t.due_date}
-                          </span>
-                        ) : null}
-                      </div>
-
-                      <div className="taskactions">
-                        <label className="label" style={{ margin: 0, flex: 1 }}>
-                          MOVE
-                          <select
-                            className="input"
-                            value={t.status}
-                            onChange={(e) =>
-                              onMove(t, e.target.value as TaskStatus)
-                            }
-                          >
-                            {LANES.map((l) => (
-                              <option key={l.key} value={l.key}>
-                                {l.label}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-
-                        <button
-                          className="btn btn-ghost"
-                          type="button"
-                          onClick={() => onToggleDone(t)}
-                        >
-                          {t.status === "DONE" ? "UNDO" : "DONE"}
-                        </button>
-
-                        <button
-                          className="btn btn-ghost"
-                          type="button"
-                          onClick={() => onDelete(t)}
-                        >
-                          DELETE
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
+                <Skeleton h={74} />
+                <Skeleton h={74} />
+                <Skeleton h={74} />
               </div>
             </section>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="board" style={{ marginTop: 14 }}>
+          {LANES.map((lane) => {
+            const items = byLane.get(lane.key) ?? [];
+            return (
+              <section key={lane.key} className="lane">
+                <div className="lanehead">
+                  <div className="lanetitle">{lane.label}</div>
+                  <div className="lanecount">{items.length}</div>
+                </div>
+
+                <div className="lanebody">
+                  {items.length === 0 ? (
+                    <div className="empty">EMPTY.</div>
+                  ) : null}
+
+                  {items.map((t) => {
+                    const overdue = isOverdue(t.due_date);
+                    return (
+                      <div
+                        key={t.id}
+                        className={overdue ? "task task-overdue" : "task"}
+                      >
+                        <div className="tasktitle">{t.title}</div>
+
+                        <div className="taskmeta">
+                          <span className="tag">{laneTitle(t.status)}</span>
+                          {t.due_date ? (
+                            <span className={overdue ? "tag tag-warn" : "tag"}>
+                              DUE {t.due_date}
+                            </span>
+                          ) : null}
+                        </div>
+
+                        <div className="taskactions">
+                          <label
+                            className="label"
+                            style={{ margin: 0, flex: 1 }}
+                          >
+                            MOVE
+                            <select
+                              className="input"
+                              value={t.status}
+                              onChange={(e) =>
+                                onMove(t, e.target.value as TaskStatus)
+                              }
+                            >
+                              {LANES.map((l) => (
+                                <option key={l.key} value={l.key}>
+                                  {l.label}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+
+                          <button
+                            className="btn btn-ghost"
+                            type="button"
+                            onClick={() => onToggleDone(t)}
+                          >
+                            {t.status === "DONE" ? "UNDO" : "DONE"}
+                          </button>
+
+                          <button
+                            className="btn btn-ghost"
+                            type="button"
+                            onClick={() => onDelete(t)}
+                          >
+                            DELETE
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
