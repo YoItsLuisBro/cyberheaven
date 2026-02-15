@@ -68,6 +68,9 @@ export function AppShell() {
           <NavLink to="/logbook" className={({ isActive }) => cx(isActive)}>
             LOGBOOK
           </NavLink>
+          <NavLink to="/focus" className={({ isActive }) => cx(isActive)}>
+            FOCUS
+          </NavLink>
           <NavLink to="/settings" className={({ isActive }) => cx(isActive)}>
             SETTINGS
           </NavLink>
@@ -145,6 +148,9 @@ export function AppShell() {
                   onClick={() => setMenuOpen(false)}
                 >
                   LOGBOOK
+                </NavLink>
+                <NavLink to="/focus" className={({ isActive }) => cx(isActive)}>
+                  FOCUS
                 </NavLink>
                 <NavLink
                   to="/settings"

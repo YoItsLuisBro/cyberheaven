@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../lib/auth";
 import { Skeleton } from "../ui/Skeleton";
+import { useFocus } from "../lib/focus";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
   const { user, profile, avatarUrl, profileLoading } = useAuth();
 
   const displayName = profile?.username ?? user?.email ?? "UNKNOWN USER";
+
+  const { derived, toggle, reset } = useFocus();
+  const nav = useNavigate();
 
   return (
     <div className="page">
@@ -45,10 +50,7 @@ export function Home() {
                 </>
               ) : (
                 <>
-                  USER:{" "}
-                  <span className="mono">
-                    {displayName}
-                  </span>
+                  USER: <span className="mono">{displayName}</span>
                   <div className="muted" style={{ marginTop: 6 }}>
                     EMAIL: <span className="mono">{user?.email ?? "—"}</span>
                   </div>
@@ -63,6 +65,48 @@ export function Home() {
         </div>
 
         <div className="grid2">
+          <div className="card" style={{ minHeight: 0 }}>
+            <div className="cardtitle">FOCUS</div>
+
+            <div
+              className="focusMini"
+              onClick={() => nav("/focus")}
+              role="button"
+              tabIndex={0}
+            >
+              <div className="focusMiniLeft">
+                <div className="tag">{derived.label}</div>
+                <div className="mono focusMiniTime">{derived.mmss}</div>
+              </div>
+
+              <div className="focusMiniRight">
+                <button
+                  className="btn"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggle();
+                  }}
+                >
+                  {derived.running ? "PAUSE" : "START"}
+                </button>
+                <button
+                  className="btn btn-ghost"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    reset();
+                  }}
+                >
+                  RESET
+                </button>
+              </div>
+            </div>
+
+            <div className="cardcta" style={{ marginTop: 10 }}>
+              OPEN / FOCUS
+            </div>
+          </div>
           <Link to="/deadline" className="cardlink">
             <div className="card">
               <div className="cardtitle">DEADLINE MACHINE</div>
@@ -86,7 +130,7 @@ export function Home() {
             <div className="card">
               <div className="cardtitle">ACCOUT SETTINGS</div>
               <div className="cardbody">
-                EMAIL. PASSWORD. DATA PURGE. NO FLUFF.
+                USERNAME. AVATAR. EMAIL. PASSWORD. DATA PURGE. NO FLUFF.
               </div>
               <div className="cardcta">OPEN →</div>
             </div>
