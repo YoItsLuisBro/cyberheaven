@@ -6,6 +6,7 @@ export type Entry = {
   entry_date: string; // YYYY-MM-DD
   title: string | null;
   body: string;
+  deleted_at: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -14,7 +15,8 @@ export async function listEntries() {
   return supabase
     .schema("logbook")
     .from("entries")
-    .select("id,user_id,entry_date,title,body,created_at,updated_at")
+    .select("id,user_id,entry_date,title,body,deleted_at,created_at,updated_at")
+    .is("deleted_at", null)
     .order("entry_date", { ascending: false })
     .order("created_at", { ascending: false });
 }
@@ -56,6 +58,18 @@ export async function updateEntry(
     .single();
 }
 
-export async function deleteEntry(id: string) {
-  return supabase.schema("logbook").from("entries").delete().eq("id", id);
+export async function softDeleteEntry(id: string) {
+  return supabase
+    .schema("logbook")
+    .from("entries")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", id);
+}
+
+export async function restoreEntry(id: string) {
+  return supabase
+    .schema("logbook")
+    .from("entries")
+    .update({ deleted_at: null })
+    .eq("id", id);
 }

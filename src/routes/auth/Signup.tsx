@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
 import { useToast } from "../../ui/toast";
+import { canRun, markRan } from "../../lib/cooldown";
 
 export function Signup() {
   const toast = useToast();
@@ -19,6 +20,12 @@ export function Signup() {
 
     setErr(null);
     setBusy(true);
+
+    if (!canRun("signup", 60)) {
+      setErr("WAIT 60 SECONDS BEFORE TRYING SIGNUP AGAIN.");
+      return;
+    }
+    markRan("signup");
 
     try {
       const site =

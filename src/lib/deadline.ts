@@ -8,6 +8,7 @@ export type Task = {
   title: string;
   status: TaskStatus;
   due_date: string | null; // YYYY-MM-DD
+  deleted_at: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -17,6 +18,7 @@ export async function listTasks() {
     .schema("deadline")
     .from("tasks")
     .select("id,user_id,title,status,due_date,created_at,updated_at")
+    .is("deleted_at", null)
     .order("created_at", { ascending: false });
 }
 
@@ -53,6 +55,18 @@ export async function updateTask(
     .single();
 }
 
-export async function deleteTask(id: string) {
-  return supabase.schema("deadline").from("tasks").delete().eq("id", id);
+export async function softDeleteTask(id: string) {
+  return supabase
+    .schema("deadline")
+    .from("tasks")
+    .update({ deleted_at: new Date().toISOString() })
+    .eq("id", id);
+}
+
+export async function restoreTask(id: string) {
+  return supabase
+    .schema("deadline")
+    .from("tasks")
+    .update({ deleted_at: null })
+    .eq("id", id);
 }

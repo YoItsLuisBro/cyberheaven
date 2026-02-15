@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../lib/auth";
 import { supabase } from "../../lib/supabase";
+import { canRun, markRan } from "../../lib/cooldown";
 
 export function VerifyEmail() {
   const { user, signOut } = useAuth();
@@ -15,6 +16,11 @@ export function VerifyEmail() {
     if (!email) return;
     setBusy(true);
     setStatus(null);
+    if (!canRun("resend_verify", 30)) {
+      setStatus("WAIT 30 SECONDS BEFORE RESENDING.");
+      return;
+    }
+    markRan("resend_verify");
     try {
       const { error } = await supabase.auth.resend({
         type: "signup",

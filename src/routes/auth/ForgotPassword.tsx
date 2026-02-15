@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
+import { canRun, markRan } from "../../lib/cooldown";
 
 export function ForgotPassword() {
   const [email, setEmail] = React.useState("");
@@ -11,6 +12,11 @@ export function ForgotPassword() {
     e.preventDefault();
     setStatus(null);
     setBusy(true);
+    if (!canRun("reset_password", 45)) {
+      setStatus("WAIT 45 SECONDS BEFORE TRYING AGAIN.");
+      return;
+    }
+    markRan("reset_password");
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(
