@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect x="0" y="0" width="512" height="512" fill="#000000"/>
+  <rect x="16" y="16" width="480" height="480" fill="none" stroke="#ffffff" stroke-width="32"/>
+  <text x="256" y="270" text-anchor="middle" dominant-baseline="middle"
+        font-family="DejaVu Sans, Arial Black, Arial, sans-serif" font-weight="900" font-size="260" letter-spacing="-12">
+    <tspan fill="#ffffff">C</tspan><tspan fill="#b6ff3b">H</tspan>
+  </text>
+</svg>
