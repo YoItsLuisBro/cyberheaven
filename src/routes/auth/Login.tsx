@@ -1,11 +1,9 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabase";
-import { useToast } from "../../ui/toast";
 
 export function Login() {
   const nav = useNavigate();
-  const toast = useToast();
   const [identifier, setIdentifier] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [err, setErr] = React.useState<string | null>(null);
@@ -43,41 +41,6 @@ export function Login() {
     }
   }
 
-  async function resendVerification() {
-    if (busy) return;
-    setBusy(true);
-    try {
-      const ident = identifier.trim();
-      if (!ident) {
-        toast.push("WARN", "ENTER USERNAME OR EMAIL FIRST.");
-        return;
-      }
-
-      const { data: email, error: rpcErr } = await supabase
-        .schema("core")
-        .rpc("login_email", { p_identifier: ident });
-
-      if (rpcErr) throw rpcErr;
-
-      const targetEmail = (email ?? ident).trim().toLowerCase();
-      const site =
-        (import.meta.env.VITE_SITE_URL as string) ?? window.location.origin;
-
-      const { error } = await supabase.auth.resend({
-        type: "signup",
-        email: targetEmail,
-        options: { emailRedirectTo: `${site}/auth/callback` },
-      });
-
-      if (error) throw error;
-
-      toast.push("OK", "VERIFICATION EMAIL SENT. CHECK INBOX/SPAM.");
-    } catch {
-      toast.push("ERR", "FAILED TO RESEND. TRY AGAIN LATER.");
-    } finally {
-      setBusy(false);
-    }
-  }
 
   return (
     <div className="authpage authpage-cyber">
@@ -157,14 +120,6 @@ export function Login() {
               <span>
                 Forgot? <Link to="/forgot">RESET PASSWORD</Link>
               </span>
-              <button
-                className="btn btn-ghost"
-                type="button"
-                onClick={resendVerification}
-                disabled={busy}
-              >
-                RESEND VERIFICATION
-              </button>
             </div>
 
             <div className="authfooter">
