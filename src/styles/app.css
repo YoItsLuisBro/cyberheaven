@@ -628,12 +628,72 @@ a {
 }
 
 /* Fix dropdown readability (Deadline lane select + any other selects) */
-select.input{
+select.input {
   background: #000;
   color: var(--ink);
 }
 
-select.input option{
+select.input option {
   background: #000;
   color: var(--ink);
+}
+
+.toastStack {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  gap: 10px;
+  z-index: 9999;
+  width: min(420px, calc(100vw - 24px));
+}
+
+.toast {
+  border: 2px solid var(--line);
+  background: #000;
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 10px;
+}
+
+.toastK {
+  font-family: var(--mono);
+  letter-spacing: 0.18em;
+  font-weight: 950;
+  border: 2px solid var(--line);
+  padding: 6px 8px;
+  text-align: center;
+  align-self: start;
+}
+
+.toast-OK {
+  border-color: var(--acid);
+}
+.toast-OK .toastK {
+  border-color: var(--acid);
+  color: var(--acid);
+}
+
+.toast-WARN {
+  border-color: var(--warn);
+}
+.toast-WARN .toastK {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+
+.toast-ERR {
+  border-color: #fff;
+}
+.toast-ERR .toastK {
+  border-color: #fff;
+  color: #fff;
+}
+
+.toastM {
+  font-family: var(--mono);
+  opacity: 0.95;
 }
